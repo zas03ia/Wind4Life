@@ -63,6 +63,7 @@ class AnemometerExportHandler
             'latitude',
             'longitude',
             'created_at',
+            'updated_at',
             'readings_count',
         ];
     }

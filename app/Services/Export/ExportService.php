@@ -184,6 +184,12 @@ class ExportService
             $validFields = $handler->getDefaultFields();
         }
 
+        // For anemometers, don't apply select if readings_count is requested
+        // since it's an aggregated field, not a real column
+        if ($resource === 'anemometers' && in_array('readings_count', $validFields)) {
+            return $query; // Return query without select restriction
+        }
+
         return $query->select($this->mapFieldsToSelect($validFields, $resource));
     }
 
@@ -210,9 +216,11 @@ class ExportService
             if (strpos($field, '.') !== false) {
                 // Handle relationship fields
                 $parts = explode('.', $field);
-                $mapped[] = $parts[0] . '.*'; // Select all from related table
+                if ($resource === 'readings' && $parts[0] === 'anemometer') {
+                    $mapped[] = 'readings.anemometer_id';
+                }
             } else {
-                $mapped[] = $field;
+                $mapped[] = $resource . '.' . $field;
             }
         }
 

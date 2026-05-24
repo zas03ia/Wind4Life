@@ -49,7 +49,7 @@ class ExportController extends Controller
         ]);
     }
 
-    public function download(string $filename): Response
+    public function download(string $filename): JsonResponse|Response
     {
         $exportData = $this->exportService->getStoredExport($filename);
         

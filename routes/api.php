@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AnemometerController;
 use App\Http\Controllers\Api\AnemometerReadingController;
 use App\Http\Controllers\Api\AuthTokenController;
+use App\Http\Controllers\Api\ExportController;
 use App\Http\Controllers\Api\ReadingController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -38,4 +39,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // readings (NO export route)
     Route::apiResource('readings', ReadingController::class);
+
+    // export
+    Route::post('export', [ExportController::class, 'export']);
+    Route::get('export/download/{filename}', [ExportController::class, 'download'])->name('export.download');
 });
